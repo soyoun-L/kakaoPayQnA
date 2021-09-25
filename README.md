@@ -44,9 +44,10 @@ kakaoPayQna
                          └ custWrite            #고객문의등록 팝업 웹페이지(미로그인버전) (html, js)
                          
                          └ user                 #상담원웹페이지 (html, js)
-                         
-                         application.properties #h2, jpa, mybatis 설정
                          common.js              #공통스크립트
+                         
+        └ application.properties                #h2, jpa, mybatis 설정
+        └ data.sql                              #초기 테스트 데이터 생성
 ```
 
 ## 실행방법
@@ -62,6 +63,22 @@ kakaoPayQna
 4. Package Explorer > kakaoPayQna 우클릭 > Configure > Add Gradle Nature
 5. Package Explorer > kakaoPayQna 우클릭 > Properties > Resource > Text file encoding UTF-8
 6. Run As Spring Boot App (run KakaoPayQnaApplication)
+
+- 고객문의접수(미로그인버전) : http://127.0.0.1:8080/custQus/custQus.html
+- 고객문의접수(로그인버전) : http://127.0.0.1:8080/customer/custMain.html
+- 상담원문의답변 : http://127.0.0.1:8080/user/usrMain.html
+
+## 테스트 초기 데이터 정보
+* 참고 : src/main/resources/data.sql 에 초기 데이터 생성 쿼리 작성
+>고객데이터
+1. CUST1 / 1234 / 김철수
+2. CUST2 / 1234 / 홍길동
+3. CUST3 / 1234 / 이영수
+> 상담원데이터
+1. AGENT1 / 1234 / 라이언
+2. AGENT2 / 1234 / 어피치
+> 문의데이터
+- 5건 생성
 
 ## 문제 해결 전략
 > 환경 구성
