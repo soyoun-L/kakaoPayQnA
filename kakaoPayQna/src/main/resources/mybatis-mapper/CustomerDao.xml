@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kakaoPay.qna.dao.CustomerDao">
+	<insert id="insertCustomer" parameterType="customerDto">
+		INSERT INTO CUSTOMER
+		(
+		  CUST_ID
+		, CUST_NAME
+		, PWD
+		, PWD_HINT
+		, PWD_ANSWER
+		, TRY_CNT
+		, RGST_DATE
+		)
+		VALUES
+		(
+		  #{custId}
+		, #{custName}
+		, #{pwd}
+		, #{pwdHint}
+		, #{pwdAnswer}
+		, 0
+		, TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		)
+	</insert>
+	
+	<select id="getCustomer" parameterType="customerDto" resultType="customerDto">
+		SELECT CUST_ID
+			 , CUST_NAME
+			 , PWD
+			 , PWD_HINT
+			 , PWD_ANSWER
+			 , RGST_DATE
+			 , TRY_CNT
+		  FROM CUSTOMER
+		 WHERE CUST_ID = #{custId}
+	</select>
+	
+	<update id="updateTryCnt" parameterType="customerDto">
+		UPDATE CUSTOMER
+		   SET TRY_CNT = TRY_CNT + 1
+		 WHERE CUST_ID = #{custId}
+	</update>
+	
+	<update id="updateTryCntInit" parameterType="customerDto">
+		UPDATE CUSTOMER
+		   SET TRY_CNT = 0
+		 WHERE CUST_ID = #{custId}
+		  AND PWD = #{pwd}
+	</update>
+	
+	<select id="getCustomerQnalist" parameterType="customerDto" resultType="questionListDto">
+		SELECT QNA.QST_SEQ
+			 , QNA.CUST_ID
+			 , CUS.CUST_NAME
+			 , QNA.TITLE
+			 , QNA.MEMO
+			 , QNA.USER_ID
+			 , USR.USER_NAME
+			 , QNA.CHRG_DATE
+			 , QNA.ANSWER
+			 , QNA.ANSWER_DATE
+			 , QNA.RGST_DATE
+			 , CASE WHEN ISNULL(QNA.USER_ID, '') = '' THEN '00' <!-- 배정대기 -->
+					WHEN ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = '' THEN '01' <!-- 답변대기 -->
+					ELSE '02' <!-- 답변완료 -->
+				END AS STATE_CD <!-- 상태코드 -->
+			 , CASE WHEN ISNULL(QNA.USER_ID, '') = '' THEN '배정대기' <!-- 배정대기 -->
+					WHEN ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = '' THEN '답변대기' <!-- 답변대기 -->
+					ELSE '답변완료' <!-- 답변완료 -->
+				END AS STATE_NAME <!-- 상태코드 -->
+		  FROM QUESTION_ANSWER QNA
+		  LEFT OUTER JOIN CUSTOMER CUS
+			ON CUS.CUST_ID = QNA.CUST_ID
+		  LEFT OUTER JOIN USER USR
+			ON QNA.USER_ID = USR.USER_ID
+		 WHERE QNA.CUST_ID = #{custId}
+		 ORDER BY QNA.QST_SEQ DESC
+	</select>
+</mapper>

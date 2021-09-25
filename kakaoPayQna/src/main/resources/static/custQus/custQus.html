@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>고객문의리스트</title>
+	</head>
+	<body onload="fnOnload()">
+		<section style="position: absolute; top:0; right:0; bottom:0; left:0; min-width: 750px;">
+			<section id="sectionTop" style="position: absolute; top:0; right:0; left:0; height:58px; background: beige;">
+				<h2 style="position:absolute; width:250px; margin:10px;">■ 고객 문의 리스트 ■</h4>
+			</section>
+			<section id="sectionMiddle" style="position: absolute; top:58px; right:0; bottom: 35px; left:0; overflow:auto; ">
+				<section style="position: absolute; top: 0; right: 0; height: 33px; left: 0;">
+					<table style="position: absolute; width: 391px;">
+						<tbody>
+							<tr>
+								<th>아이디</th>
+								<td>
+									<input id="txtCustId" onkeydown="fnEnterSrch()" type="text" style="width:100px;"/>
+								</td>
+								<th>고객명</th>
+								<td>
+									<input id="txtCustName" onkeydown="fnEnterSrch()" type="text" style="width:150px;"/>
+								</td>
+								<th>상태</th>
+								<td>
+									<select id="cmbState" onkeydown="fnEnterSrch()">
+										<option value="">전체</option>
+										<option value="00">배정대기</option>
+										<option value="01">답변대기</option>
+										<option value="02">답변완료</option>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<button id="btnGetQnaList" onclick="fnGetQnaList()" style="position: absolute; top:3px; left:522px;">조회</button>
+				</section>
+				<section style="position: absolute; top: 33px; right: 0; bottom: 0; left: 0;">
+					<section id="sectionLeft" style="position: absolute; top:0; right: 52%; bottom: 0; left: 0; overflow:auto;">
+						<h4 style="position:absolute; left:0; width:200px;">⊙ 문의 리스트</h4>
+						<div style="position:absolute; top:30px; bottom:45px; width:100%; min-width:700px; overflow:auto; background: ivory;">
+							<table id="tbQnaList" style="position:relative; top:0; width:100%; overflow-y: scroll; font-size: 13px; table-layout: fixed;">
+								<colgroup>
+									<col style="width:25px;"/>
+									<col style="width:60px;"/>
+									<col />
+									<col style="width:75px;"/>
+									<col style="width:75px;"/>
+									<col style="width:75px;"/>
+									<col style="width:130px;"/>
+									<col style="width:130px;"/>
+								</colgroup>
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>진행상태</th>
+										<th>제목</th>
+										<th>등록자ID</th>
+										<th>등록자명</th>
+										<th>담당상담원</th>
+										<th>답변일시</th>
+										<th>등록일시</th>
+									</tr>
+								</thead>
+								<tbody id="bodyQnaList">
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<section id="sectionRight" style="position: absolute; top:0; right: 0; bottom: 0; left:48%;">
+						<h4 style="position:absolute; left:0; width:200px;">⊙ 문의 상세 정보</h4>
+						<table class="dtlInfo" id="tbInfo" style="position:absolute; top:30px; left:0;">
+							<tbody>
+								<tr>
+									<th>등록자ID</th>
+									<td><input id="txtRgstCustId" type="text" style="width:200px;" readonly="readonly"/></td>
+									<th>등록자명</th>
+									<td><input id="txtRgstCustName" type="text" style="width:200px;" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<th>제목</th>
+									<td colspan="3"><input id="txtTitle" type="text" style="width:501px;" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<th>문의내용</th>
+									<td><textarea id="txtMemo" type="text" maxlength="200" readonly="readonly"/></textarea></td>
+									<th>답변내용</th>
+									<td><textarea id="txtAnswer" type="text" readonly="readonly"/></textarea></td>
+								</tr>
+								<tr>
+									<th>등록일자</th>
+									<td><input id="rgst_date" type="text" readonly="readonly" /></td>
+									<th>답변일자</th>
+									<td><input id="txtAnswerDate" type="text" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<th>진행상태</th>
+									<td><input id="txtCurState" type="text" readonly="readonly"/></td>
+									<th>담당상담원</th>
+									<td><input id="txtUserName" type="text" readonly="readonly"/></td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="position: absolute; top:375px; left:0; width: 590px; height: 30px;">
+							<button id="btnLinkQus" onclick="fnLinkQus()" style="position: absolute; top:0; left:0;">문의작성</button>
+							<button id="btnDel" onclick="fnDelDivShow()" style="position: absolute; top:0; right:46px;" disabled="disabled">삭제</button>
+							<button id="btnSave" onclick="fnUpdDivShow()" style="position: absolute; top:0; right:0;" disabled="disabled">수정</button>
+						</div>
+						
+						<!-- 문의 삭제 div -->
+						<div id="divDelChkCust" style="position: absolute; top:244px; left: 292px; width: 300px; height:125px; background: beige; border: 2px solid black; border-radius: 1em; text-align:center; display:none;">
+							<h3 style="margin: 11px;">■ 문의 삭제 ■</h3>
+							<table id="tbPwdFind" style="position:absolute; top:52px; left:34px; border: none;">
+								<tbody>
+									<tr>
+										<th style="border: none;">비밀번호</th>
+										<td style="border: none;">
+											<input id="txtDelPwd" type="password" maxlength="10" style="width:156px; height:19px; "/>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="border: none;">
+											<button id="btnCustPwdFind" onclick="fnDelQnaData()">삭제</button>
+											<button id="btnCloseFindDiv" onclick="fnCloseDelDiv()">취소</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<!-- 문의 수정 -->
+						<div id="divUpdChkCust" style="position: absolute; top:103px; left: 252px; width: 335px; height:260px; background: beige; border: 2px solid black; border-radius: 1em; text-align: center; display:none">
+							<h3 style="margin: 11px;">■ 문의 수정 ■</h3>
+							<table id="tbPwdFind" style="position:absolute; top:45px; left:30px; border: none;">
+								<tbody>
+									<tr>
+										<th style="border: none;">문의내용</th>
+										<td style="border: none;"><textarea id="txtUpdMemo" type="text" maxlength="200" style="width:200px; height: 126px;"/></textarea></td>
+									</tr>
+									<tr>
+										<th style="border: none;">비밀번호</th>
+										<td style="border: none;">
+											<input id="txtUpdPwd" type="password" maxlength="10" style="width:200px; height:19px;"/>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="border: none;">
+											<button id="btnCustPwdFind" onclick="fnUpdQnaData()">수정</button>
+											<button id="btnCloseFindDiv" onclick="fnCloseUpdDiv()">취소</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</section>
+				</section>
+			</section>
+			
+			
+			<section id="sectionBottom" style="position: absolute; right:0; bottom:0; left:0; height:35px; background: beige;">
+				<h4>Made by soyounlee</h2>
+			</section>
+		</section>
+		<script type="text/javascript" charset="utf-8" src="/common.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custQus.js"></script>
+		<!--<script type="text/javascript" charset="utf-8" src="/common.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custMain.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custLogin.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custJoin.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custFindPwd.js"></script>
+		-->
+		<style>
+			section {
+				margin:2px;
+			}
+			
+			table {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			
+			th, td
+			{
+				border: 1px solid black;
+				padding-top: 1px;
+				padding-right:3px;
+				padding-bottom:3px;
+				padding-left:3px;
+				height:26px;
+				white-space:nowrap;
+			}
+			
+			#tbQnaList td {
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			
+			th
+			{
+				background: gainsboro;
+				text-align:right;
+				margin:2px;
+			}
+			
+			h4 {
+				margin: 3px;
+			}
+			
+			.dtlInfo input {
+				width: 200px;
+			}
+			
+			textarea {
+				width: 200px;
+				height:200px;
+				margin-top:2px;
+				margin-bottom: -4px;
+				resize:none;
+			}
+			
+			button {
+				border-radius:6px;
+				cursor: pointer;
+			}
+			
+			#tbQnaList tr {
+				cursor: pointer;
+				background: white;
+			}
+		</style>
+	</body>
+</html>

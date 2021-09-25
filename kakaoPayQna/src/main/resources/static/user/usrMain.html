@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>상담원문의답변페이지</title>
+	</head>
+	<body onload="">
+		<section style="position: absolute; top:0; right:0; bottom:0; left:0; min-width: 750px;">
+			<section id="sectionTop" style="position: absolute; top:0; right:0; left:0; height:58px; background: skyblue;">
+				<h2 style="position:absolute; width:250px; margin:10px;">■ 상담원 문의 관리 ■</h4>
+				<button id="btnLogOut" onclick="fnLogout()" style="position:absolute; top:16px; left: 300px;">로그아웃</button>
+			</section>
+			<section id="sectionMiddle" style="position: absolute; top:58px; right:0; bottom: 35px; left:0; overflow:auto; ">
+				<section style="position: absolute; top: 0; right: 0; height: 65px; left: 0;">
+					<h4>⊙ 상담원 정보</h4>
+					<table style="width:593px;">
+						<tbody>
+							<tr>
+								<th>아이디</th>
+								<td>
+									<input id="txtUserId" type="text" style="width:100px;" readonly="readonly"/>
+								</td>
+								<th>이름</th>
+								<td>
+									<input id="txtUserName" type="text" style="width:150px;" readonly="readonly"/>
+								</td>
+								<th>배정 건수</th>
+								<td>
+									<input id="txtQnACnt" type="text" style="width:100px;" readonly="readonly"/>
+								</td>
+								<th>답변완료 문의 건수</th>
+								<td>
+									<input id="txtAnsQnACnt" type="text" style="width:100px;" readonly="readonly"/>
+								</td>
+								<th style="background: darkorange;">답변대기 문의 건수</th>
+								<td>
+									<input id="txtNoAnsQnACnt" type="text" style="width:100px;" readonly="readonly"/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<section style="position: absolute; top: 65px; right: 0; bottom: 0; left: 0;">
+					<section style="position: absolute; top:0; right: 52%; left: 0; height:49%; overflow:auto;">
+						<h4 style="position:absolute; left:0; width:200px;">⊙ 문의 리스트</h4>
+						<button id="btnGetAutoNoAnsQnaList" onclick="fnGetAutoNoAnsQnaList()" style="position: absolute; right:72px;">자동조회</button>
+						<button id="btnGetMnlNoAnsQnaList" onclick="fnGetAutoMnlAnsQnaList()" style="position: absolute; right:0;">수동조회</button>
+						
+						<table style="position:absolute; top:30px; width:100%;min-width:700px; font-size: 14px;">
+							<colgroup>
+								<col style="width:33px;"/>
+								<col style="width:80px;"/>
+								<col style="width:100px;"/>
+								<col style="width:230px;"/>
+								<col style="width:160px;"/>
+							</colgroup>
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>배정</th>
+									<th>고객명</th>
+									<th>제목</th>
+									<th>등록일시</th>
+								</tr>
+							</thead>
+						</table>
+							
+						<div style="position:absolute; top:62px; bottom:0; width:100%; min-width:700px; overflow:auto; background: aliceblue;">
+							<table id="tbNoAnsQnaList" style="position:relative; top:0; width:100%; overflow-y: scroll; font-size: 13px;">
+								<colgroup>
+									<col style="width:33px;"/>
+									<col style="width:80px;"/>
+									<col style="width:100px;"/>
+									<col style="width:230px;"/>
+									<col style="width:160px;"/>
+								</colgroup>
+								<tbody id="bodyNoAnsQnaList">
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<section id="sectionLeft" style="position: absolute; right: 52%; bottom: 0; left: 0; height:50%; overflow:auto;">
+						<h4 style="position:absolute; left:0; width:200px;">⊙ 답변 리스트</h4>
+						<button id="btnGetAnsQnaList" onclick="fnGetAnsQnaList()" style="position: absolute; right:0;">조회</button>
+						
+						<table style="position:absolute; top:30px; width:100%;min-width:700px; font-size: 14px;">
+							<colgroup>
+								<col style="width:33px;"/>
+								<col style="width:80px;"/>
+								<col style="width:100px;"/>
+								<col style="width:230px;"/>
+								<col style="width:160px;"/>
+								<col style="width:160px;"/>
+							</colgroup>
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>진행상태</th>
+									<th>고객명</th>
+									<th>제목</th>
+									<th>답변일시</th>
+									<th>등록일시</th>
+								</tr>
+							</thead>
+						</table>
+							
+						<div style="position:absolute; top:62px; bottom:0; width:100%; min-width:700px; overflow:auto; background: aliceblue;">
+							<table id="tbAnsQnaList" style="position:relative; top:0; width:100%; overflow-y: scroll; font-size: 13px;">
+								<colgroup>
+									<col style="width:33px;"/>
+									<col style="width:80px;"/>
+									<col style="width:100px;"/>
+									<col style="width:230px;"/>
+									<col style="width:160px;"/>
+									<col style="width:160px;"/>
+								</colgroup>
+								<tbody id="bodyAnsQnaList">
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<section id="sectionRight" style="position: absolute; top:0; right: 0; bottom: 0; left:48%;">
+						<h4 style="position:absolute; left:0; width:200px;">⊙ 문의 상세 정보</h4>
+						<table class="dtlInfo" id="tbInfo" style="position:absolute; top:30px; left:0;">
+							<tbody>
+								<tr>
+									<th>제목</th>
+									<td colspan="3"><input id="txtTitle" type="text" style="width:501px;" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<th>고객명</th>
+									<td><input id="txtCustName" type="text" readonly="readonly"/></td>
+									<th>진행상태</th>
+									<td><input id="txtCurState" type="text" readonly="readonly"/></td>
+								</tr>
+								<tr>
+									<th>문의내용</th>
+									<td><textarea id="txtMemo" type="text" readonly="readonly"/></textarea></td>
+									<th>답변내용</th>
+									<td><textarea id="txtAnswer" type="text" maxlength="200"/></textarea></td>
+								</tr>
+								<tr>
+									<th>등록일자</th>
+									<td><input id="rgst_date" type="text" readonly="readonly" /></td>
+									<th>답변일자</th>
+									<td><input id="txtAnswerDate" type="text" readonly="readonly"/></td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="position: absolute; top:342px; left:0; width: 590px; height: 30px;">
+							<button id="btnSave" onclick="fnSaveQnaData()" style="position: absolute; top:0; right:0;">저장</button>
+						</div>
+					</section>
+				</section>
+			</section>
+			<section id="sectionBottom" style="position: absolute; right:0; bottom:0; left:0; height:35px; background: skyblue;">
+				<h4>Made by soyounlee</h2>
+			</section>
+			<section id="sectionLogin" style="position: fixed; top:0; right:0; bottom:0; left:0; background: white; text-align: center;">
+				<h1>[상담원]문의관리 로그인</h1>
+				<table id="tbLoginUserInfo" style="position:absolute; left:calc(50% - 122px);">
+					<tbody>
+						<tr>
+							<th>아이디</th>
+							<td><input id="txtLoginUserId" type="text" onkeydown="fnEnterLogin()" maxlength="10"/></td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td><input id="txtLoginPwd" type="password" onkeydown="fnEnterLogin()" maxlength="10"/></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button id="btnLogin" onclick="fnLogin()">로그인</button>
+								<button id="btnFindPwd" onclick="fnFindPwd()">비밀번호 찾기</button>
+								<button id="btnJoin" onclick="fnJoin()">회원가입</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<div id="divJoin" style="position: absolute; top:50px; left: calc(50% - 191px); width: 378px; height:300px; background: skyblue; border: 2px solid black; border-radius: 2em; display:none">
+					<h3 style="margin: 11px;">■ 회원가입 ■</h3>
+					<table id="tbUsrJoin" style="position:absolute; top:52px; left:49px; border: none;">
+						<tbody>
+							<tr>
+								<th style="border: none;">아이디</th>
+								<td style="border: none;"><input id="txtJoinUserId" type="text" onkeyup="fnDisableJoinLoginBtn()" maxlength="10" style="width:156px; height:19px;"/></td>
+							</tr>
+							<tr>
+								<th style="background: skyblue; border: none;">이름</th>
+								<td style="border: none;"><input id="txtJoinUserName" type="text" onkeyup="fnDisableJoinLoginBtn()" maxlength="20" style="width:156px; height:19px;"/></td>
+							</tr>
+							<tr>
+								<th style="border: none;">비밀번호</th>
+								<td style="border: none;"><input id="txtJoinPwdOrg" type="password" onkeyup="fnChkPwd()" maxlength="10" style="width:156px; height:19px;"/></td>
+							</tr>
+							<tr>
+								<th style="background: skyblue; border: none;">비밀번호 확인</th>
+								<td style="border: none;"><input id="txtJoinPwdChk" type="password" onkeyup="fnChkPwd()" maxlength="10" style="width:156px; height:19px;"/></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;"><input id="txtPwdCmp" type="text" onkeyup="fnDisableJoinLoginBtn()" style="width:264px; height:19px; border:none;" readonly="readonly"/></td>
+							</tr>
+							<tr>
+								<th style="background: skyblue; border: none;">비밀번호 힌트</th>
+								<td style="border: none;"><input id="txtJoinPwdHint" type="text" onkeyup="fnDisableJoinLoginBtn()" maxlength="100" style="width:156px; height:19px;" /></td>
+							</tr>
+							<tr>
+								<th style="border: none;">비밀번호 답</th>
+								<td style="border: none;"><input id="txtJoinPwdAnswer" type="text" onkeyup="fnDisableJoinLoginBtn()" maxlength="100" style="width:156px; height:19px;"/></td>
+							</tr>
+							<tr>
+							<td colspan="2" style="border: none;">
+								<button id="btnJoinLogin" onclick="fnJoinUser()" disabled="disabled">가입 후 로그인</button>
+								<button id="btnCloseDiv" onclick="fnCloseDiv()">닫기</button>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div id="divPwdFind" style="position: absolute; top:50px; left: calc(50% - 191px); width: 378px; height:300px; background: skyblue; border: 2px solid black; border-radius: 2em; display:none">
+					<h3 style="margin: 11px;">■ 비밀번호 찾기 ■</h3>
+					<table id="tbPwdFind" style="position:absolute; top:52px; left:49px; border: none;">
+						<tbody>
+							<tr>
+								<th style="border: none;">아이디</th>
+								<td style="border: none;"><input id="txtFindUserId" type="text" maxlength="10" style="width:156px; height:19px;" readonly="readonly"/></td>
+							</tr>
+							<tr>
+								<th style="background: skyblue; border: none;">이름</th>
+								<td style="border: none;"><input id="txtFindUserName" type="text" maxlength="20" style="width:156px; height:19px;" readonly="readonly"/></td>
+							</tr>
+							<tr>
+								<th style="border: none;">비밀번호 힌트</th>
+								<td style="border: none;"><input id="txtFindPwdHint" type="text" maxlength="100" style="width:156px; height:19px;" readonly="readonly" /></td>
+							</tr>
+							<tr>
+								<th style="background: skyblue; border: none;">비밀번호 답</th>
+								<td style="border: none;">
+									<input id="txtFindPwdAnswer" type="text" maxlength="100" style="width:156px; height:19px;"/>
+									<input id="txtPwdAnswerInfo" type="text" style="display:none;"/>
+									<input id="txtFindPwdOrg" type="password" style="display:none;"/>
+								</td>
+							</tr>
+							<tr>
+								<th style="border: none;">비밀번호</th>
+								<td style="border: none;">
+									<input id="txtFindPwd" type="text" maxlength="100" style="width:156px; height:19px; background:gainsboro" readonly="readonly"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;">
+									<button id="btnUserPwdFind" onclick="fnUserPwdFind()">찾기</button>
+									<button id="btnCloseFindDiv" onclick="fnCloseFindDiv()">닫기</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</section>
+		<script type="text/javascript" charset="utf-8" src="/common.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./usrMain.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./usrLogin.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./usrJoin.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./usrFindPwd.js"></script>
+		
+		<style>
+			section {
+				margin:2px;
+			}
+			
+			table {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			
+			th, td
+			{
+				border: 1px solid black;
+				padding-top: 1px;
+				padding-right:3px;
+				padding-bottom:3px;
+				padding-left:3px;
+				height:26px;
+				white-space:nowrap;
+			}
+			
+			th
+			{
+				background: gainsboro;
+				text-align:right;
+				margin:2px;
+			}
+			
+			h4 {
+				margin: 3px;
+			}
+			
+			.dtlInfo input {
+				width: 200px;
+			}
+			
+			.dtlInfo textarea {
+				width: 200px;
+				height:200px;
+				margin-top:2px;
+				margin-bottom: -4px;
+				resize:none;
+			}
+			
+			button {
+				border-radius:6px;
+				cursor: pointer;
+			}
+			
+			#tbNoAnsQnaList tr, #tbAnsQnaList tr {
+				cursor: pointer;
+				background: white;
+			}
+		</style>
+	</body>
+</html>

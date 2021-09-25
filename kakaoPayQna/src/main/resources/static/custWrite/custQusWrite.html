@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>고객문의작성</title>
+	</head>
+	<body onload="">
+		<section style="position: absolute; top:0; right:0; bottom:0; left:0; min-width: 750px;">
+			<section id="sectionTop" style="position: absolute; top:0; right:0; left:0; height:58px; background: beige;">
+				<h2 style="position:absolute; width:250px; margin:10px;">■ 고객 문의 작성 ■</h4>
+			</section>
+			<section id="sectionMiddle" style="position: absolute; top:58px; right:0; bottom: 35px; left:0; overflow:auto; ">
+				<table class="dtlInfo" id="tbInfo" style="position:absolute; top:0; left:0;">
+					<tbody>
+						<tr>
+							<th>이름</th>
+							<td><input id="txtCustName" type="text" style="width:114px;"/></td>
+							<th>아이디</th>
+							<td><input id="txtCustId" type="text" style="width:114px;"/></td>
+							<th>비밀번호</th>
+							<td><input id="txtCustPwd" type="password" style="width:114px;"/></td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="5"><input id="txtTitle" type="text" style="width:501px;"/></td>
+						</tr>
+						<tr>
+							<th>문의내용</th>
+							<td colspan="5"><textarea id="txtMemo" type="text" maxlength="200" /></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+				<div style="position: absolute; top:281px; left:0; width: 590px; height: 30px;">
+					<button id="btnSave" onclick="fnSaveQnaData()" style="position: absolute; top:0; left:250px;">등록</button>
+					<button id="btnClose" onclick="fnClosePop()" style="position: absolute; top:0; left:297px;">닫기</button>
+				</div>
+			</section>
+			
+			
+			<section id="sectionBottom" style="position: absolute; right:0; bottom:0; left:0; height:35px; background: beige;">
+				<h4>Made by soyounlee</h2>
+			</section>
+		</section>
+		<script type="text/javascript" charset="utf-8" src="/common.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./custQusWrite.js"></script>
+		<style>
+			section {
+				margin:2px;
+			}
+			
+			table {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			
+			th, td
+			{
+				border: 1px solid black;
+				padding-top: 1px;
+				padding-right:3px;
+				padding-bottom:3px;
+				padding-left:3px;
+				height:26px;
+				white-space:nowrap;
+			}
+			
+			th
+			{
+				background: gainsboro;
+				text-align:right;
+				margin:2px;
+			}
+			
+			h4 {
+				margin: 3px;
+			}
+			
+			textarea {
+				width: 501px;
+				height:200px;
+				margin-top:2px;
+				margin-bottom: -4px;
+				resize:none;
+			}
+			
+			button {
+				border-radius:6px;
+				cursor: pointer;
+			}
+		</style>
+	</body>
+</html>

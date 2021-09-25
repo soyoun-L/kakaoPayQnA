@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kakaoPay.qna.dao.QuestionAnswerDao">
+	<insert id="insertQuestion" parameterType="questionAnswerDto">
+		INSERT INTO QUESTION_ANSWER
+		(
+		  CUST_ID
+		, CUST_NAME
+		, PWD
+		, TITLE
+		, MEMO
+		, USER_ID
+		, CHRG_DATE
+		, ANSWER
+		, ANSWER_DATE
+		, RGST_DATE
+		)
+		VALUES
+		(
+		  #{custId}
+		, #{custName}
+		, #{pwd}
+		, #{title}
+		, #{memo}
+		, null
+		, null
+		, null
+		, null
+		, TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		)
+	</insert>
+	
+	<update id="updateQuestion" parameterType="questionAnswerDto">
+		UPDATE QUESTION_ANSWER
+		   SET TITLE = #{title}
+			 , MEMO = #{memo}
+		 WHERE QST_SEQ = #{qstSeq}
+		   AND CUST_ID = #{custId}
+	</update>
+	
+	<update id="updateChargeUser" parameterType="questionAnswerDto">
+		UPDATE QUESTION_ANSWER
+		   SET USER_ID = #{userId}
+			 , CHRG_DATE = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		 WHERE QST_SEQ = #{qstSeq}
+		   AND CUST_ID = #{custId}
+		   AND (USER_ID IS NULL OR USER_ID = '')
+	</update>
+	
+	<update id="updateAnswer" parameterType="questionAnswerDto">
+		UPDATE QUESTION_ANSWER
+		   SET ANSWER = #{answer}
+			 , ANSWER_DATE = TO_CHAR(SYSDATE,'yyyyMMddHH24MISS')
+		 WHERE QST_SEQ = #{qstSeq}
+		   AND CUST_ID = #{custId}
+		   AND USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteQnaInfo" parameterType="questionAnswerDto">
+		DELETE FROM QUESTION_ANSWER
+		 WHERE QST_SEQ = #{qstSeq}
+		   AND CUST_ID = #{custId}
+	</delete>
+	
+	<select id="getNoAnswerList" resultType="questionListDto">
+		SELECT QNA.QST_SEQ
+			 , QNA.CUST_ID
+			 , ISNULL(CUS.CUST_NAME, QNA.CUST_NAME) AS CUST_NAME
+			 , QNA.TITLE
+			 , QNA.MEMO
+			 , QNA.USER_ID
+			 , USR.USER_NAME
+			 , QNA.CHRG_DATE
+			 , QNA.ANSWER
+			 , QNA.ANSWER_DATE
+			 , QNA.RGST_DATE
+		  FROM QUESTION_ANSWER QNA
+		  LEFT OUTER JOIN CUSTOMER CUS
+		    ON CUS.CUST_ID = QNA.CUST_ID
+		  LEFT OUTER JOIN USER USR
+		    ON QNA.USER_ID = USR.USER_ID
+		 WHERE (QNA.USER_ID IS NULL OR QNA.USER_ID = '')
+		   AND (QNA.ANSWER_DATE IS NULL OR QNA.ANSWER_DATE = '')
+		 ORDER BY QNA.QST_SEQ ASC
+	</select>
+	
+	<select id="selectQnAInfo" parameterType="questionAnswerDto" resultType="questionAnswerDto">
+		SELECT QST_SEQ
+			 , CUST_ID
+			 , TITLE
+			 , MEMO
+			 , USER_ID
+			 , CHRG_DATE
+			 , ANSWER
+			 , ANSWER_DATE
+			 , RGST_DATE
+		  FROM QUESTION_ANSWER
+		 WHERE QST_SEQ = #{qstSeq}
+		   AND CUST_ID = #{custId}
+	</select>
+	
+	<select id="getCustomerQuestlist" parameterType="questionListDto" resultType="questionListDto">
+		SELECT QNA.QST_SEQ
+			 , QNA.CUST_ID
+			 , QNA.CUST_NAME
+			 , QNA.PWD
+			 , QNA.TITLE
+			 , QNA.MEMO
+			 , QNA.USER_ID
+			 , USR.USER_NAME
+			 , QNA.CHRG_DATE
+			 , QNA.ANSWER
+			 , QNA.ANSWER_DATE
+			 , QNA.RGST_DATE
+			 , CASE WHEN ISNULL(QNA.USER_ID, '') = '' THEN '00' <!-- 배정대기 -->
+					WHEN ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = '' THEN '01' <!-- 답변대기 -->
+					ELSE '02' <!-- 답변완료 -->
+				END AS STATE_CD <!-- 상태코드 -->
+			 , CASE WHEN ISNULL(QNA.USER_ID, '') = '' THEN '배정대기' <!-- 배정대기 -->
+					WHEN ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = '' THEN '답변대기' <!-- 답변대기 -->
+					ELSE '답변완료' <!-- 답변완료 -->
+				END AS STATE_NAME <!-- 상태코드 -->
+		  FROM QUESTION_ANSWER QNA
+		  LEFT OUTER JOIN USER USR
+			ON QNA.USER_ID = USR.USER_ID
+		<where>
+			<if test="custId != null and custId != ''">
+			AND QNA.CUST_ID = #{custId}
+			</if>
+			<if test="custName != null and custName != ''">
+			AND QNA.CUST_NAME LIKE #{custName} || '%'
+			</if>
+			<if test="stateCd.equals('00')">
+			AND ISNULL(QNA.USER_ID, '') = ''
+			</if>
+			<if test="stateCd.equals('01')">
+			AND ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = ''
+			</if>
+			<if test="stateCd.equals('02')">
+			AND (ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') <![CDATA[<>]]> '')
+			</if>
+		</where>
+		 ORDER BY QNA.QST_SEQ DESC
+	</select>
+</mapper>
