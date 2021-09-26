@@ -1,13 +1,10 @@
 package com.kakaoPay.qna.repository;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kakaoPay.qna.dao.CustomerDao;
 import com.kakaoPay.qna.dto.CustomerDto;
-import com.kakaoPay.qna.dto.QuestionListDto;
 
 @Repository
 public class CustomerRepository {
