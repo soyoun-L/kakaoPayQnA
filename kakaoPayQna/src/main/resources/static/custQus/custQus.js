@@ -148,6 +148,8 @@ function fnLinkQus() {
 
 // 삭제 div 보여주기
 function fnDelDivShow() {
+	fnCloseUpdDiv(); // 수정div 숨기기
+	
 	getElementById("divDelChkCust").style.display = "block"; // 삭제 div 보여주기
 	
 	getElementById("txtDelPwd").value = ""; // 비밀번호 초기화
@@ -160,6 +162,8 @@ function fnCloseDelDiv() {
 
 // 수정 div 보여주기
 function fnUpdDivShow() {
+	fnCloseDelDiv(); // 삭제div 숨기기
+	
 	getElementById("divUpdChkCust").style.display = "block"; // 수정 div 보여주기
 	
 	getElementById("txtUpdPwd").value = ""; // 비밀번호 초기화
