@@ -26,11 +26,7 @@ public class CustomerRepository {
 	public CustomerDto getCustomer(CustomerDto customer) {
 		return customerDao.getCustomer(customer);
 	}
-	
-	public List<QuestionListDto> getCustomerQnalist(CustomerDto customer) {
-		return customerDao.getCustomerQnalist(customer);
-	}
-	
+		
 	public void updateTryCnt(CustomerDto customer) {
 		customerDao.updateTryCnt(customer);
 	}

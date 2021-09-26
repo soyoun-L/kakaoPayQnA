@@ -1,26 +1,8 @@
 /*********************************************************************************
-* custMain.js
-* 고객 문의 접수 메인
+* custQusWrite.js
+* 고객 문의 등록(비로그인)
 *
 *********************************************************************************/
-// 거래 요청 고객 파라미터
-var custparam = {
-	"custId": null,
-	"custName": null,
-	"pwd": null,
-	"pwdAnswer":null,
-	"pwdHint": null
-};
-
-// 고객 파라미터 초기화
-function fnInitCustParam() {
-	custparam.custId = null;
-	custparam.custName = null;
-	custparam.pwd = null;
-	custparam.pwdAnswer = null;
-	custparam.pwdHint = null;
-}
-
 // 팝업 창 닫기 버튼 클릭
 function fnClosePop() {
 	window.close();

@@ -30,11 +30,6 @@ public class CustomerController {
 		return customerService.getCustomer(customer);
 	}
 	
-	@PostMapping("customer/getCustomerQnaList.do")
-	public List<QuestionListDto> getCustomerQnaList(@RequestBody CustomerDto customer) {
-		return customerService.getCustomerQnalist(customer);
-	}
-	
 	@PostMapping("customer/updateTryCnt.do")
 	public void updateTryCnt(@RequestBody CustomerDto customer) {
 		customerService.updateTryCnt(customer);

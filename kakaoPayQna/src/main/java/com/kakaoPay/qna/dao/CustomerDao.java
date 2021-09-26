@@ -11,7 +11,6 @@ public interface CustomerDao {
 	
 	void insertCustomer(CustomerDto customer);
 	CustomerDto getCustomer(CustomerDto customer);
-	List<QuestionListDto> getCustomerQnalist(CustomerDto customer);
 	void updateTryCnt(CustomerDto customer);
 	void updateTryCntInit(CustomerDto customer);
 }

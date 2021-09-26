@@ -65,7 +65,7 @@
 	<select id="getNoAnswerList" resultType="questionListDto">
 		SELECT QNA.QST_SEQ
 			 , QNA.CUST_ID
-			 , ISNULL(CUS.CUST_NAME, QNA.CUST_NAME) AS CUST_NAME
+			 , ISNULL(QNA.CUST_NAME, CUS.CUST_NAME) AS CUST_NAME
 			 , QNA.TITLE
 			 , QNA.MEMO
 			 , QNA.USER_ID
@@ -102,7 +102,7 @@
 	<select id="getCustomerQuestlist" parameterType="questionListDto" resultType="questionListDto">
 		SELECT QNA.QST_SEQ
 			 , QNA.CUST_ID
-			 , QNA.CUST_NAME
+			 , ISNULL(QNA.CUST_NAME, CUS.CUST_NAME) AS CUST_NAME
 			 , QNA.PWD
 			 , QNA.TITLE
 			 , QNA.MEMO
@@ -121,6 +121,8 @@
 					ELSE '답변완료' <!-- 답변완료 -->
 				END AS STATE_NAME <!-- 상태코드 -->
 		  FROM QUESTION_ANSWER QNA
+		  LEFT OUTER JOIN CUSTOMER CUS
+			ON CUS.CUST_ID = QNA.CUST_ID
 		  LEFT OUTER JOIN USER USR
 			ON QNA.USER_ID = USR.USER_ID
 		<where>
@@ -128,15 +130,16 @@
 			AND QNA.CUST_ID = #{custId}
 			</if>
 			<if test="custName != null and custName != ''">
-			AND QNA.CUST_NAME LIKE #{custName} || '%'
+			AND ISNULL(QNA.CUST_NAME, CUS.CUST_NAME) LIKE #{custName} || '%'
+			    
 			</if>
-			<if test="stateCd.equals('00')">
+			<if test="'00'.equals(stateCd)">
 			AND ISNULL(QNA.USER_ID, '') = ''
 			</if>
-			<if test="stateCd.equals('01')">
+			<if test="'01'.equals(stateCd)">
 			AND ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') = ''
 			</if>
-			<if test="stateCd.equals('02')">
+			<if test="'02'.equals(stateCd)">
 			AND (ISNULL(QNA.USER_ID, '') <![CDATA[<>]]> '' AND ISNULL(QNA.ANSWER_DATE, '') <![CDATA[<>]]> '')
 			</if>
 		</where>

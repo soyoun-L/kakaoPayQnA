@@ -1,6 +1,6 @@
 /*********************************************************************************
-* custMain.js
-* 고객 문의 접수 메인
+* custQus.js
+* 고객 문의 조회(비로그인)
 *
 *********************************************************************************/
 var TRAN_CUST_ID = "customer/"; // 고객 관련 데이터 거래 요청용
@@ -133,12 +133,17 @@ function fnSetDtlInfo() {
 
 // 문의작성 버튼 클릭
 function fnLinkQus() {
-	var w = 600;
-	var h = 450;
-	var x = (screen.width - w) / 2;
-	var y = (screen.height - h) / 2;
+	var width = 600;
+	var height = 450;
+	var left = (screen.width - width) / 2;
+	var top = (screen.height - height) / 2;
 	
-	window.open("/custWrite/custQusWrite.html", "custQusWrite", "left=" + x + ", top=" + y + ", width=" + w + ", height=" + h);
+	var option = "left=" + left;
+		option += ", top=" + top;
+		option += ", width=" + width;
+		option += ", height=" + height;
+	
+	window.open("/custWrite/custQusWrite.html", "custQusWrite", option);
 }
 
 // 삭제 div 보여주기

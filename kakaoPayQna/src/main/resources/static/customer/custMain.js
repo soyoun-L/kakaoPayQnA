@@ -34,8 +34,8 @@ function fnGetQnaList() {
 	getElementById("bodyQnaList").innerHTML = "";
 	fnInitQnAParam(); // Q&A 파라미터 초기화
 	fnSetDtlInfo(); // 문의 상세 정보 셋팅
-
-	xmlHttpRequest(TRAN_CUST_ID + "getCustomerQnaList.do", "GET_QNA_LIST", custparam, completeMain);
+	
+	xmlHttpRequest(TRAN_QNA_ID + "getCustomerQuestlist.do", "GET_QNA_LIST", custparam, completeMain);
 }
 
 // 그리드 리스트 셋팅

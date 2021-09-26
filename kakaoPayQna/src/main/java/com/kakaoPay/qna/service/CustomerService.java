@@ -25,10 +25,6 @@ public class CustomerService {
 	public CustomerDto getCustomer(CustomerDto customer) {
 		return customerRepository.getCustomer(customer);
 	}
-
-	public List<QuestionListDto> getCustomerQnalist(CustomerDto customer) {
-		return customerRepository.getCustomerQnalist(customer);
-	}
 	
 	public void updateTryCnt(CustomerDto customer) {
 		customerRepository.updateTryCnt(customer);

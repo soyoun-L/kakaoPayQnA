@@ -52,7 +52,7 @@
 	<select id="getUserQnalist" parameterType="userDto" resultType="questionListDto">
 		SELECT QNA.QST_SEQ
 			 , QNA.CUST_ID
-			 , ISNULL(CUS.CUST_NAME, QNA.CUST_NAME) AS CUST_NAME
+			 , ISNULL(QNA.CUST_NAME, CUS.CUST_NAME) AS CUST_NAME
 			 , QNA.TITLE
 			 , QNA.MEMO
 			 , QNA.USER_ID
